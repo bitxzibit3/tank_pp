@@ -1,0 +1,130 @@
+#include <AFMotor.h>
+#include <Servo.h>
+#include <SoftwareSerial.h>
+
+AF_DCMotor motor1(3); // Левый мотор
+AF_DCMotor motor2(4); // Правый мотор
+
+SoftwareSerial BTserial (2, 3);
+
+int TEST_SPEED = 240;
+
+
+void setup() {
+Serial.begin(38400);
+pinMode (2, INPUT);
+pinMode (3, OUTPUT);
+// Serial.println ("Here salam");
+BTserial.begin (38400);
+motor1.setSpeed (TEST_SPEED);
+motor2.setSpeed (TEST_SPEED);
+motor1.run(RELEASE);
+motor2.run(RELEASE);
+}
+
+void mv_forward (int speed) {
+// motor1.run(RELEASE);
+// motor2.run (RELEASE);
+motor1.setSpeed(speed);
+motor2.setSpeed(speed);
+motor1.run(FORWARD);
+motor2.run(BACKWARD);
+}
+
+void mv_back (int speed) {
+// motor1.run(RELEASE);
+// motor2.run (RELEASE);
+motor1.setSpeed (speed);
+motor2.setSpeed (speed);
+motor1.run (BACKWARD);
+motor2.run (FORWARD);
+}
+
+void full_stop () {
+motor1.setSpeed (0);
+motor1.run (RELEASE);
+motor2.setSpeed (0);
+motor2.run (RELEASE);
+}
+
+void mv_left () {
+int turn_speed = TEST_SPEED; // Скорость поворота (корректируемая)
+// motor1.run(RELEASE);
+motor1.setSpeed (turn_speed);
+motor2.setSpeed (turn_speed);
+motor1.run (FORWARD);
+// motor2.run (RELEASE);
+motor2.run (BACKWARD);
+}
+
+void mv_right () {
+int turn_speed = TEST_SPEED; // Скорость поворота (корректируемая)
+// motor2.run (RELEASE);
+motor2.setSpeed (turn_speed);
+motor1.setSpeed (turn_speed);
+motor2.run (FORWARD);
+// motor1.run(RELEASE);
+motor1.run (BACKWARD);
+}
+
+void loop() {
+mv_forward (TEST_SPEED);
+delay (100000);
+// mv_back(TEST_SPEED);
+// delay (4000);
+// mv_left ();
+// delay (4000);
+// mv_right ();
+// delay (4000);
+}
+
+// void loop () {
+// int initial_speed = 100;
+// if (BTserial.available()) {
+// char c = BTserial.read(); // читаем из software-порта
+// // switch (c) {
+// // case ('L') : {
+// // mv_left();
+// // delay (1);
+// // break;
+// // }
+// // case ('R'): {
+// // mv_right();
+// // delay (1);
+// // break;
+// // }
+// // case ('F'): {
+// // mv_forward (intital_speed);
+// // delay (1);
+// // break;
+// // }
+// // case ('B'): {
+// // mv_back (initial_speed);
+// // delay (1);
+// // break;
+// // }
+// // case ('f') : { // Огонь
+// // //;
+// // }
+// // case ('l') : { // Башню влево
+// // //;
+// // }
+// // case ('r') : { // Башню вправо
+// // //;
+// // }
+// // }
+// Serial.print(c); // пишем в hardware-порт
+// }
+// // if (Serial.available()) {
+// // char c = Serial.read(); // читаем из hardware-порта
+// // BTserial.write(c); // пишем в software-порт
+// // }
+// mv_forward (TEST_SPEED);
+// delay (1000);
+// mv_back (TEST_SPEED);
+// delay (1000);
+// mv_left ();
+// delay (1000);
+// mv_right ();
+// delay (1000);
+//}
